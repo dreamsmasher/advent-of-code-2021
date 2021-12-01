@@ -90,3 +90,6 @@ instance Foldable f => Coalesce f where
 (~>) :: (Traversable t, Applicative f) => t a -> (a -> f b) -> f (t b)
 (~>) = for
 infixr 6 ~>
+
+dropR :: Int -> [a] -> [a]
+dropR n xs = take (length xs - n) xs

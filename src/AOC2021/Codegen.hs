@@ -1,5 +1,5 @@
 {-# LANGUAGE TemplateHaskell, NoOverloadedLists #-}
-module AOC2021.Codegen where
+module AOC2021.Codegen (genGetters) where
 
 import AOC2021.Prelude
 import Language.Haskell.TH
@@ -19,8 +19,8 @@ getParts day =
         VarE <$> getPart part modName
    in tupE $ map toExp [1,2]
 
-genGetter :: ExpQ
-genGetter = 
+genGetters :: ExpQ
+genGetters = 
   let days = [1..25]
       patterns = days <&> intToPat
       bodies = days <&> getParts

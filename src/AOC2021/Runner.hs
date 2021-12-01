@@ -30,6 +30,6 @@ import AOC2021.Solutions.Day25 qualified
 
 import AOC2021.Codegen
 
-resolveSolutionsFor :: Int -> (String, String)
+resolveSolutionsFor :: Int -> (String -> String, String -> String)
 -- \case {1 -> (Day1.part1, Day1.part2); ...}
-resolveSolutionsFor = $(genGetter)
+resolveSolutionsFor = $(genGetters)
