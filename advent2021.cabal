@@ -1,0 +1,263 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           advent2021
+version:        0.1.0.0
+description:    Advent of Code 2021
+homepage:       https://github.com/dreamsmasher/advent2021#readme
+bug-reports:    https://github.com/dreamsmasher/advent2021/issues
+author:         Norman Liu
+maintainer:     norman@nliu.net
+copyright:      2021 Norman Liu
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/dreamsmasher/advent2021
+
+library
+  exposed-modules:
+      AOC2021.Codegen
+      AOC2021.Config
+      AOC2021.Helpers
+      AOC2021.Prelude
+      AOC2021.Runner
+      AOC2021.Solutions.Day1
+      AOC2021.Solutions.Day10
+      AOC2021.Solutions.Day11
+      AOC2021.Solutions.Day12
+      AOC2021.Solutions.Day13
+      AOC2021.Solutions.Day14
+      AOC2021.Solutions.Day15
+      AOC2021.Solutions.Day16
+      AOC2021.Solutions.Day17
+      AOC2021.Solutions.Day18
+      AOC2021.Solutions.Day19
+      AOC2021.Solutions.Day2
+      AOC2021.Solutions.Day20
+      AOC2021.Solutions.Day21
+      AOC2021.Solutions.Day22
+      AOC2021.Solutions.Day23
+      AOC2021.Solutions.Day24
+      AOC2021.Solutions.Day25
+      AOC2021.Solutions.Day3
+      AOC2021.Solutions.Day4
+      AOC2021.Solutions.Day5
+      AOC2021.Solutions.Day6
+      AOC2021.Solutions.Day7
+      AOC2021.Solutions.Day8
+      AOC2021.Solutions.Day9
+  other-modules:
+      Paths_advent2021
+  hs-source-dirs:
+      src
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      ImportQualifiedPost
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      EmptyCase
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      OverloadedLists
+      PatternSynonyms
+      RankNTypes
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeFamilyDependencies
+      TypeOperators
+      ViewPatterns
+      PatternGuards
+      NoImplicitPrelude
+      BlockArguments
+  build-depends:
+      advent-of-code-api
+    , base >=4.7 && <5
+    , bifunctors
+    , bytestring
+    , containers
+    , free
+    , hashable
+    , lens
+    , mtl
+    , parsec
+    , profunctors
+    , split
+    , template-haskell
+    , text
+    , these
+    , transformers
+    , unordered-containers
+    , vector
+  default-language: Haskell2010
+
+executable advent2021-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_advent2021
+  hs-source-dirs:
+      app
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      ImportQualifiedPost
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      EmptyCase
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      OverloadedLists
+      PatternSynonyms
+      RankNTypes
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeFamilyDependencies
+      TypeOperators
+      ViewPatterns
+      PatternGuards
+      NoImplicitPrelude
+      BlockArguments
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      advent-of-code-api
+    , advent2021
+    , base >=4.7 && <5
+    , bifunctors
+    , bytestring
+    , containers
+    , free
+    , hashable
+    , lens
+    , mtl
+    , parsec
+    , profunctors
+    , split
+    , template-haskell
+    , text
+    , these
+    , transformers
+    , unordered-containers
+    , vector
+  default-language: Haskell2010
+
+test-suite advent2021-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_advent2021
+  hs-source-dirs:
+      test
+  default-extensions:
+      ApplicativeDo
+      BangPatterns
+      ImportQualifiedPost
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveLift
+      DeriveTraversable
+      DerivingStrategies
+      EmptyCase
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedStrings
+      OverloadedLists
+      PatternSynonyms
+      RankNTypes
+      ScopedTypeVariables
+      StandaloneDeriving
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeFamilyDependencies
+      TypeOperators
+      ViewPatterns
+      PatternGuards
+      NoImplicitPrelude
+      BlockArguments
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      advent-of-code-api
+    , advent2021
+    , base >=4.7 && <5
+    , bifunctors
+    , bytestring
+    , containers
+    , free
+    , hashable
+    , lens
+    , mtl
+    , parsec
+    , profunctors
+    , split
+    , template-haskell
+    , text
+    , these
+    , transformers
+    , unordered-containers
+    , vector
+  default-language: Haskell2010
