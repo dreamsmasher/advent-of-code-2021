@@ -1,0 +1,106 @@
+name:                advent2021
+version:             0.1.0.0
+github:              "dreamsmasher/advent2021"
+license:             BSD3
+author:              "Norman Liu"
+maintainer:          "norman@nliu.net"
+copyright:           "2021 Norman Liu"
+
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+
+  # Metadata used when publishing your package
+  # synopsis:            Short description of your package
+  # category:            Web
+
+  # To avoid duplicated efforts in documentation and dealing with the
+  # complications of embedding Haddock markup inside cabal files, it is
+  # common to point users to the README.md file.
+description:         Advent of Code 2021
+
+dependencies:
+  - base >= 4.7 && < 5
+  - transformers
+  - mtl
+  - text
+  - parsec
+  - split
+  - containers
+  - bifunctors
+  - unordered-containers
+  - hashable
+  - lens
+  - template-haskell
+  - bytestring
+  - vector
+  - free
+  - these
+  - profunctors
+  - advent-of-code-api
+
+default-extensions:
+  - ApplicativeDo
+  - BangPatterns
+  - ImportQualifiedPost
+  - ConstraintKinds
+  - DataKinds
+  - DefaultSignatures
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveGeneric
+  - DeriveLift
+  - DeriveTraversable
+  - DerivingStrategies
+  - EmptyCase
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - InstanceSigs
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - OverloadedStrings
+  - OverloadedLists
+  - PatternSynonyms
+  - RankNTypes
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeFamilyDependencies
+  - TypeOperators
+  - ViewPatterns
+  - PatternGuards
+  - NoImplicitPrelude
+  - BlockArguments
+
+library:
+  source-dirs: src
+
+executables:
+  advent2021-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies: advent2021
+      
+
+tests:
+  advent2021-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies: advent2021
