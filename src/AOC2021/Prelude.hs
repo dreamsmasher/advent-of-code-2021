@@ -27,6 +27,7 @@ module AOC2021.Prelude
   , module Data.Functor.Compose
   , module Data.Foldable
   , module Debug.Trace
+  , module Text.Read
   ) where
 
 import Data.Char
@@ -56,3 +57,4 @@ import Control.Monad.Reader
 import Data.Functor.Compose
 import Data.Foldable (foldl')
 import Debug.Trace
+import Text.Read (readMaybe)

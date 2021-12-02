@@ -3,7 +3,9 @@ module AOC2021.Helpers where
 
 import Data.List.Split
 import Data.Maybe
+import Data.Char
 import Prelude hiding (sum, product)
+import Text.Read (readMaybe)
 import Data.Either (isLeft, fromRight)
 import Data.Foldable (foldl')
 import Control.Arrow
@@ -94,3 +96,14 @@ dropR n xs = take (length xs - n) xs
 
 triple :: (a -> a -> a) -> (a -> a -> a -> a)
 triple f a = f . f a
+
+-- \a b -> f ((g `on` h) a b)
+applyOn :: (c -> d) -> (b -> b -> c) -> (a -> b) -> a -> a -> d
+applyOn h g f a1 a2 = h $ g (f a1) (f a2)
+
+capitalize :: String -> String
+capitalize (c : cs) = toUpper c : map toLower cs
+capitalize _ = []
+
+readLower :: Read a => String -> Maybe a
+readLower = readMaybe . capitalize
