@@ -25,6 +25,7 @@ module AOC2021.Prelude
   , module Control.Monad.Writer
   , module Control.Monad.Reader
   , module Data.Functor.Compose
+  , module Data.Foldable
   , module Debug.Trace
   ) where
 
@@ -53,4 +54,5 @@ import Control.Monad.State
 import Control.Monad.Writer
 import Control.Monad.Reader
 import Data.Functor.Compose
+import Data.Foldable (foldl')
 import Debug.Trace

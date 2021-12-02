@@ -5,6 +5,7 @@ import Data.List.Split
 import Data.Maybe
 import Prelude hiding (sum, product)
 import Data.Either (isLeft, fromRight)
+import Data.Foldable (foldl')
 import Control.Arrow
 import Data.HashMap.Lazy qualified as HMLazy
 import Data.Map.Lazy qualified as MLazy
@@ -70,9 +71,6 @@ solve parser cont = toString . cont . parser
 solveLines :: (ToString b, Read a) => ([a] -> b) -> String -> String
 solveLines = solve (parseLines read)
 
-foldl' :: Foldable t => (b -> a -> b) -> b -> t a -> b
-foldl' f = foldl \(!a) -> f a
-
 sum, product :: (Foldable t, Num a) => t a -> a
 sum = foldl' (+) 0
 product = foldl' (*) 1
@@ -93,3 +91,6 @@ infixr 6 ~>
 
 dropR :: Int -> [a] -> [a]
 dropR n xs = take (length xs - n) xs
+
+triple :: (a -> a -> a) -> (a -> a -> a -> a)
+triple f a = f . f a

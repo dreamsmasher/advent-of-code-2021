@@ -10,4 +10,4 @@ part1 :: String -> String
 part1 = solveLines countIncr
 
 part2 :: String -> String
-part2 = solveLines $ countIncr . map (sum . take 3) . dropR 3 . tails
+part2 = solveLines $ countIncr . (zipWith3 (triple (+)) <*> tail <*> (tail . tail))
