@@ -7,13 +7,13 @@ import Data.Text qualified as Text
 data Dir = Forward | Down | Up deriving (Eq, Show, Read, Enum)
 
 data Command = Command Dir Int deriving (Eq, Show)
-data Position = Pos {
+data Pos = Pos {
   depth :: Int,
   horiz :: Int,
   aim :: Int
 } deriving (Eq, Show, Ord)
 
-walk :: (Position -> Int -> (Position, Position, Position)) -> String -> String
+walk :: (Pos -> Int -> (Pos, Pos, Pos)) -> String -> String
 walk step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
   where parse (words -> [dir, n]) = Command (fromJust $ readLower dir) (read n)
         mul (Pos d h _) = d * h
