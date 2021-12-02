@@ -13,8 +13,8 @@ data Pos = Pos {
   aim :: Int
 } deriving (Eq, Show, Ord)
 
-calcPos :: (Pos -> Int -> (Pos, Pos, Pos)) -> String -> String
-calcPos step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
+walk :: (Pos -> Int -> (Pos, Pos, Pos)) -> String -> String
+walk step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
   where parse (words -> [dir, n]) = Command (fromJust $ readLower dir) (read n)
         mul (Pos d h _) = d * h
         go pos (Command d n) = 
