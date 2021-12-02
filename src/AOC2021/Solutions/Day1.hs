@@ -1,4 +1,3 @@
-{-# LANGUAGE LambdaCase, NoImplicitPrelude #-}
 module AOC2021.Solutions.Day1 (part1, part2) where
 
 import AOC2021.Prelude
