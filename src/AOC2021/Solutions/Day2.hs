@@ -7,14 +7,14 @@ import Data.Text qualified as Text
 data Dir = Forward | Down | Up deriving (Eq, Show, Read, Enum)
 
 data Command = Command Dir Int deriving (Eq, Show)
-data Position = Pos {
+data Pos = Pos {
   depth :: Int,
   horiz :: Int,
   aim :: Int
 } deriving (Eq, Show, Ord)
 
-walk :: (Position -> Int -> (Position, Position, Position)) -> String -> String
-walk step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
+calcPos :: (Pos -> Int -> (Pos, Pos, Pos)) -> String -> String
+calcPos step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
   where parse (words -> [dir, n]) = Command (fromJust $ readLower dir) (read n)
         mul (Pos d h _) = d * h
         go pos (Command d n) = 
@@ -25,7 +25,7 @@ walk step = show . mul . foldl' go (Pos 0 0 0) . parseLines parse
                 _ -> up
 
 part1 :: String -> String
-part1 = walk \(Pos d h a) n -> (Pos d (h + n) a, Pos (d + n) h a, Pos (d - n) h a)
+part1 = calcPos \(Pos d h a) n -> (Pos d (h + n) a, Pos (d + n) h a, Pos (d - n) h a)
 
 part2 :: String -> String
-part2 = walk \(Pos d h a) n -> (Pos (d + n * a) (h + n) a, Pos d h (a + n), Pos d h (a - n))
+part2 = calcPos \(Pos d h a) n -> (Pos (d + n * a) (h + n) a, Pos d h (a + n), Pos d h (a - n))
