@@ -15,6 +15,9 @@ import Data.Text qualified as T
 import Data.List qualified as List
 import Control.Applicative
 import Data.Traversable
+import Data.Bifunctor (Bifunctor (bimap))
+import Control.Monad (join)
+import Data.Function (on)
 
 parseLines :: (String -> a) -> String -> [a]
 parseLines f = map f . lines
@@ -107,3 +110,25 @@ capitalize _ = []
 
 readLower :: Read a => String -> Maybe a
 readLower = readMaybe . capitalize
+
+dup :: b -> (b, b)
+dup x = (x, x)
+
+dupWith :: (a -> b) -> a -> (a, b)
+dupWith f x = (x, f x)
+
+both :: Bifunctor f => (a -> b) -> f a a -> f b b
+both = join bimap
+
+-- (+) `liftOn` (+) x y = \z w -> x + y + z + w
+-- (+) `liftOn` (Just . succ) 1 2 = Just (2 + 3)
+liftOn :: Applicative f => (a -> a -> c) -> (b -> f a) -> b -> b -> f c
+liftOn f g = liftA2 f `on` g
+
+uncurryOn :: (b -> b -> c) -> (a -> b) -> (a, a) -> c
+uncurryOn f g = uncurry (f `on` g)
+
+infixr 9 `uncurryOn`
+thenJust :: Bool -> a -> Maybe a
+thenJust True = Just 
+thenJust _ = const Nothing
