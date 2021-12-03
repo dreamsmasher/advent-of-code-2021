@@ -3,6 +3,7 @@ module AOC2021.Codegen (genGetters) where
 
 import AOC2021.Prelude
 import Language.Haskell.TH
+import AOC2021.Helpers
 
 intToPat :: Int -> PatQ
 intToPat = litP . integerL . fromIntegral
@@ -15,8 +16,10 @@ getPart part modName =
 getParts :: Int -> ExpQ
 getParts day = 
   let modName = "AOC2021.Solutions.Day" <> show day
+      appToString = appE $ varE 'toString
+      appDot = appE $ varE '(.)
       toExp part = 
-        VarE <$> getPart part modName
+        varE '(.) `appE` varE 'toString `appE` (VarE <$> getPart part modName)
    in tupE $ map toExp [1,2]
 
 genGetters :: ExpQ
