@@ -2,8 +2,6 @@ module AOC2021.Solutions.Day3  where
 
 import AOC2021.Prelude
 import Data.Map.Lazy qualified as Map
-import Data.Text qualified as Text
-import Data.Bits 
 
 part1 :: String -> Int
 part1 = ((*) `uncurryOn` fromBits)

@@ -28,6 +28,8 @@ module AOC2021.Prelude
   , module Data.Foldable
   , module Debug.Trace
   , module Text.Read
+  , module Data.Bool
+  , module Data.Bits
   ) where
 
 import Data.Char
@@ -58,3 +60,5 @@ import Data.Functor.Compose
 import Data.Foldable (foldl')
 import Debug.Trace
 import Text.Read (readMaybe)
+import Data.Bool
+import Data.Bits
