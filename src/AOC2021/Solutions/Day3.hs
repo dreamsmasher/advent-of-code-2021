@@ -1,4 +1,4 @@
-module AOC2021.Solutions.Day3  where
+module AOC2021.Solutions.Day3 (part1, part2) where
 
 import AOC2021.Prelude
 import Data.Map.Lazy qualified as Map
@@ -20,8 +20,8 @@ findRating :: (Ordering -> Bool) -> [([Bool], [Bool])] -> Int
 findRating cmp = fromBits 
                . fst 
                . Map.findMin 
-               . head 
-               . dropWhile ((/= 1) . length) 
+               . coalesce mempty
+               . find ((== 1) . length) 
                . iterate go' 
                . Map.fromList
   where go' st = 
