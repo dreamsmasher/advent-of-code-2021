@@ -132,3 +132,21 @@ infixr 9 `uncurryOn`
 thenJust :: Bool -> a -> Maybe a
 thenJust True = Just 
 thenJust _ = const Nothing
+
+(.:) :: (c -> d) -> (a -> b -> c) -> a -> b -> d
+(.:) f g x y = f (g x y)
+infixl 9 .:
+
+fmap2 :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
+fmap2 = fmap . fmap
+
+
+(<<$>>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
+(<<$>>) = fmap2
+infixl 8 <<$>>
+
+foldWhileM :: (Monad m) => (a -> m (Maybe b)) -> [a] -> m (Maybe b)
+foldWhileM f [] = pure Nothing
+foldWhileM f (x : xs) = do
+  res <- f x
+  if isJust res then pure res else foldWhileM f xs
