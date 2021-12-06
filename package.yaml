@@ -38,6 +38,7 @@ dependencies:
   - these
   - profunctors
   - advent-of-code-api
+  - semialign
 
 default-extensions:
   - ApplicativeDo
@@ -65,8 +66,6 @@ default-extensions:
   - MultiParamTypeClasses
   - MultiWayIf
   - NamedFieldPuns
-  - OverloadedStrings
-  - OverloadedLists
   - PatternSynonyms
   - RankNTypes
   - ScopedTypeVariables

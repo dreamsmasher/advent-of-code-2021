@@ -18,6 +18,7 @@ import Data.Traversable
 import Data.Bifunctor (Bifunctor (bimap))
 import Control.Monad (join)
 import Data.Function (on)
+import Data.List (iterate')
 
 parseLines :: (String -> a) -> String -> [a]
 parseLines f = map f . lines
@@ -150,3 +151,21 @@ foldWhileM f [] = pure Nothing
 foldWhileM f (x : xs) = do
   res <- f x
   if isJust res then pure res else foldWhileM f xs
+
+order2 :: Ord a => a -> a -> (a, a)
+order2 a b = if a <= b then (a, b) else (b, a)
+
+uncurryP :: (a -> b -> c) -> (d -> e -> (a, b)) -> (d, e) -> c
+uncurryP f g = uncurry f . uncurry g
+
+(+!) :: Num a => a -> a -> a
+(!x) +! (!y) = x + y
+
+(*!) :: Num a => a -> a -> a
+(!x) *! (!y) = x * y
+
+countElems :: (Ord k, Num a) => [k] -> MLazy.Map k a
+countElems = MLazy.fromListWith (+!) . map (,1)
+
+iterateTimes :: Int -> (a -> a) -> a -> a
+iterateTimes n f = (!! n) . iterate' f

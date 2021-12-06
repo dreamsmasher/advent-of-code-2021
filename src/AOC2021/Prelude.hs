@@ -30,6 +30,9 @@ module AOC2021.Prelude
   , module Text.Read
   , module Data.Bool
   , module Data.Bits
+  , module Data.List.Split
+  , module Data.Align
+  , module Data.These
   ) where
 
 import Data.Char
@@ -62,3 +65,6 @@ import Debug.Trace
 import Text.Read (readMaybe)
 import Data.Bool
 import Data.Bits
+import Data.List.Split
+import Data.Align
+import Data.These

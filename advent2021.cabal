@@ -85,8 +85,6 @@ library
       MultiParamTypeClasses
       MultiWayIf
       NamedFieldPuns
-      OverloadedStrings
-      OverloadedLists
       PatternSynonyms
       RankNTypes
       ScopedTypeVariables
@@ -112,6 +110,7 @@ library
     , mtl
     , parsec
     , profunctors
+    , semialign
     , split
     , template-haskell
     , text
@@ -153,8 +152,6 @@ executable advent2021-exe
       MultiParamTypeClasses
       MultiWayIf
       NamedFieldPuns
-      OverloadedStrings
-      OverloadedLists
       PatternSynonyms
       RankNTypes
       ScopedTypeVariables
@@ -182,6 +179,7 @@ executable advent2021-exe
     , mtl
     , parsec
     , profunctors
+    , semialign
     , split
     , template-haskell
     , text
@@ -224,8 +222,6 @@ test-suite advent2021-test
       MultiParamTypeClasses
       MultiWayIf
       NamedFieldPuns
-      OverloadedStrings
-      OverloadedLists
       PatternSynonyms
       RankNTypes
       ScopedTypeVariables
@@ -253,6 +249,7 @@ test-suite advent2021-test
     , mtl
     , parsec
     , profunctors
+    , semialign
     , split
     , template-haskell
     , text
