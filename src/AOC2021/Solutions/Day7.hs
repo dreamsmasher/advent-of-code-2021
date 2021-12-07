@@ -17,5 +17,5 @@ part1 = solveDay7 subtract
 
 part2 :: String -> Int
 part2 = solveDay7 countDistance
-  where sumTo n = (n * (n + 1)) `shiftR` 1 -- thank you based Leibniz
+  where sumTo n = (n * (n + 1)) `shiftR` 1 -- thank you based Gauss
         countDistance x y = sumTo $ abs (x - y)
