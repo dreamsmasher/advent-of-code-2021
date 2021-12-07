@@ -1,4 +1,4 @@
-module AOC2021.Solutions.Day6 where
+module AOC2021.Solutions.Day6 (part1, part2) where
 
 import AOC2021.Prelude
 import Data.Map.Lazy qualified as Map
