@@ -39,6 +39,7 @@ dependencies:
   - profunctors
   - advent-of-code-api
   - semialign
+  - time
 
 default-extensions:
   - ApplicativeDo

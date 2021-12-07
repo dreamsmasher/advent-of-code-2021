@@ -115,6 +115,7 @@ library
     , template-haskell
     , text
     , these
+    , time
     , transformers
     , unordered-containers
     , vector
@@ -184,6 +185,7 @@ executable advent2021-exe
     , template-haskell
     , text
     , these
+    , time
     , transformers
     , unordered-containers
     , vector
@@ -254,6 +256,7 @@ test-suite advent2021-test
     , template-haskell
     , text
     , these
+    , time
     , transformers
     , unordered-containers
     , vector

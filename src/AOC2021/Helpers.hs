@@ -169,3 +169,6 @@ countElems = MLazy.fromListWith (+!) . map (,1)
 
 iterateTimes :: Int -> (a -> a) -> a -> a
 iterateTimes n f = (!! n) . iterate' f
+
+parseCommas :: Read a => String -> [a]
+parseCommas = coalesce [] . traverse readMaybe . splitOn ","

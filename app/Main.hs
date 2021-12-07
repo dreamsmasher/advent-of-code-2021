@@ -9,6 +9,7 @@ import Data.Text qualified as Text
 import Advent 
 import AOC2021.Runner (resolveSolutionsFor)
 import Data.Foldable (traverse_)
+import Data.Time (getCurrentTime, diffUTCTime, formatTime, defaultTimeLocale, nominalDiffTimeToSeconds)
 
 orExit :: MonadFail m => m (Maybe a) -> String -> m a
 orExit ma msg = ma >>= maybe (fail msg) pure
@@ -50,8 +51,16 @@ main = do
   aocRes <- runExceptT do
     input <- fmap Text.unpack . runAoC' aocOpts $ AoCInput day
     log $ printf "Running day %d part %d..." (dayInt day) (partInt part)
+
+    startTime <- liftIO getCurrentTime
     let !soln = solve input
-    log $ "\nResult: " <> soln <> "\n"
+    endTime <- liftIO getCurrentTime
+
+    log $ "\nResult: " <> soln <> "\nRuntime: " <> show (endTime `diffUTCTime` startTime) <> "\n"
+    -- let runTime = nominalDiffTimeToSeconds $ endTime `diffUTCTime` startTime
+    --     fmttedTime = formatTime defaultTimeLocale "" runTime
+    --     resMsg :: String 
+          -- = printf "\nResult: %s\nRuntime: " soln
     confirmOrBreak "Submit?"
     (_, result) <- runAoC' aocOpts $ AoCSubmit day part (solve input)
     log $ fmtResult result
