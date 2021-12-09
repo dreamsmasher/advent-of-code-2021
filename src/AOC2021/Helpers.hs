@@ -7,10 +7,13 @@ import Data.Char
 import Prelude hiding (sum, product)
 import Text.Read (readMaybe)
 import Data.Either (isLeft, fromRight)
-import Data.Foldable (foldl')
+import Data.Foldable (foldl', Foldable (toList))
 import Control.Arrow
 import Data.HashMap.Lazy qualified as HMLazy
+import Data.HashMap.Strict qualified as HMStrict
 import Data.Map.Lazy qualified as MLazy
+import Data.Map.Strict qualified as MStrict
+import Data.IntMap qualified as IntMap
 import Data.Text qualified as T
 import Data.List qualified as List
 import Control.Applicative
@@ -19,6 +22,18 @@ import Data.Bifunctor (Bifunctor (bimap))
 import Control.Monad (join)
 import Data.Function (on)
 import Data.List (iterate')
+import Control.Category (Category)
+import Data.Kind (Type)
+import Data.IORef (IORef, newIORef, readIORef, writeIORef, modifyIORef')
+import Control.Monad.IO.Class (MonadIO (liftIO))
+import Control.Concurrent.MVar (MVar, newMVar, readMVar, putMVar, modifyMVar, modifyMVar_)
+import Control.Monad.ST (ST)
+import Data.STRef (STRef, newSTRef, readSTRef, writeSTRef, modifySTRef')
+import Control.Monad.State (MonadState, gets)
+import Data.Hashable (Hashable)
+import qualified Data.IntMap as IntMap
+import Data.Set qualified as Set
+import Data.Monoid (Sum (..))
 
 parseLines :: (String -> a) -> String -> [a]
 parseLines f = map f . lines
@@ -87,6 +102,9 @@ class Coalesce f where
   (??) = flip coalesce
   infixr 6 ??
 
+orMempty :: (Coalesce f, Monoid a) => f a -> a
+orMempty = coalesce mempty
+
 -- Maybe, Either, [], ...
 instance Foldable f => Coalesce f where
   coalesce = foldr const
@@ -130,6 +148,7 @@ uncurryOn :: (b -> b -> c) -> (a -> b) -> (a, a) -> c
 uncurryOn f g = uncurry (f `on` g)
 
 infixr 9 `uncurryOn`
+
 thenJust :: Bool -> a -> Maybe a
 thenJust True = Just 
 thenJust _ = const Nothing
@@ -141,16 +160,16 @@ infixl 9 .:
 fmap2 :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
 fmap2 = fmap . fmap
 
-
 (<<$>>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
 (<<$>>) = fmap2
 infixl 8 <<$>>
 
 foldWhileM :: (Monad m) => (a -> m (Maybe b)) -> [a] -> m (Maybe b)
-foldWhileM f [] = pure Nothing
-foldWhileM f (x : xs) = do
-  res <- f x
-  if isJust res then pure res else foldWhileM f xs
+foldWhileM f = go where 
+  go [] = pure Nothing
+  go (x : xs) = f x >>= \case
+    j@(Just _) -> pure j
+    _ -> go xs
 
 order2 :: Ord a => a -> a -> (a, a)
 order2 a b = if a <= b then (a, b) else (b, a)
@@ -171,4 +190,68 @@ iterateTimes :: Int -> (a -> a) -> a -> a
 iterateTimes n f = (!! n) . iterate' f
 
 parseCommas :: Read a => String -> [a]
-parseCommas = coalesce [] . traverse readMaybe . splitOn ","
+parseCommas = orMempty . traverse readMaybe . splitOn ","
+
+splitOnce :: Eq a => a -> [a] -> ([a], [a])
+splitOnce sep = fmap tail' . span (/= sep)
+
+countIf :: Foldable t => (a -> Bool) -> t a -> Int
+countIf p = foldl' (\a -> (a +) . fromEnum . p) 0
+
+alterRefM :: STRef s a -> (a -> ST s (b, a)) -> ST s b
+alterRefM ref f = do
+  val <- readSTRef ref
+  (res, !val') <- f val
+  writeSTRef ref val' 
+  pure res
+
+alterRef :: STRef s a -> (a -> (b, a)) -> ST s b
+alterRef ref f = alterRefM ref (pure . f)
+
+catchEither :: Maybe b -> a -> Either a b
+catchEither mb e = maybe (Left e) Right mb
+
+justOr :: a -> Maybe b -> Either a b
+justOr = flip catchEither
+
+class Semigroup s => Subtractible s where
+  (<->) :: s -> s -> s
+
+instance Subtractible a => Subtractible (Maybe a) where
+  Just x <-> Just y = Just (x <-> y)
+  x <-> _ = x
+
+instance Eq a => Subtractible [a] where
+  (<->) = (List.\\)
+
+instance Ord k => Subtractible (MLazy.Map k v) where
+  (<->) = MLazy.difference
+
+instance (Hashable k, Eq k) => Subtractible (HMLazy.HashMap k v) where
+  (<->) = HMLazy.difference
+instance Subtractible (IntMap.IntMap v) where
+  (<->) = IntMap.difference
+
+instance (Ord k) => Subtractible (Set.Set k) where
+  (<->) = Set.difference
+
+instance Num a => Subtractible (Sum a) where
+  Sum a <-> Sum b = Sum (a - b)
+
+slipR :: (a -> b -> c -> d) -> b -> c -> a -> d
+slipR f b c a = f a b c
+
+fromDigits :: (Num a, Foldable t) => t a -> a
+fromDigits = foldl' (\a x -> (a * 10) + x) 0
+
+toMapOf :: (Ord k, Foldable t) => (v -> k) -> (v -> v') -> t v -> MLazy.Map k v'
+toMapOf = toMapWith const
+
+toMapWith :: (Ord k, Foldable t) => (v' -> v' -> v') -> (v -> k) -> (v -> v') -> t v -> MLazy.Map k v'
+toMapWith combine mkKey mkVal = foldr (liftA2 (MLazy.insertWith combine) mkKey mkVal) mempty
+
+toMapSemi :: (Ord k, Foldable t, Semigroup v') => (v -> k) -> (v -> v') -> t v -> MLazy.Map k v'
+toMapSemi = toMapWith (<>)
+
+toMap :: (Foldable t, Ord k) => t k -> t v -> MLazy.Map k v
+toMap keys vals = MLazy.fromList $ zip (toList keys) (toList vals)

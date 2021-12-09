@@ -2,15 +2,12 @@ module AOC2021.Solutions.Day7 (part1, part2) where
 
 import AOC2021.Prelude
 import Data.Map.Lazy qualified as Map
-import Data.Text qualified as Text
 
 solveDay7 :: (Int -> Int -> Int) -> String -> Int
-solveDay7 f = minimum . getDists . parseCommas
-  where getDists xs =
-          let counts = countElems xs
-              lim = maximum xs
-              getDist n = sum $ Map.mapWithKey (\k v -> abs (f k n) * v) counts
-           in map getDist [0..lim] 
+solveDay7 f (parseCommas -> xs) =
+    let counts = countElems xs
+        getDist n = Map.foldlWithKey' (\a k v -> a + abs (f k n) * v) 0 counts
+     in minimum $ getDist <$> [0..maximum xs]
 
 part1 :: String -> Int
 part1 = solveDay7 subtract

@@ -52,6 +52,7 @@ library
       AOC2021.Solutions.Day4
       AOC2021.Solutions.Day5
       AOC2021.Solutions.Day6
+      AOC2021.Solutions.Day6.Sol
       AOC2021.Solutions.Day7
       AOC2021.Solutions.Day8
       AOC2021.Solutions.Day9
@@ -118,6 +119,7 @@ library
     , time
     , transformers
     , unordered-containers
+    , validation
     , vector
   default-language: Haskell2010
 
@@ -188,6 +190,7 @@ executable advent2021-exe
     , time
     , transformers
     , unordered-containers
+    , validation
     , vector
   default-language: Haskell2010
 
@@ -259,5 +262,6 @@ test-suite advent2021-test
     , time
     , transformers
     , unordered-containers
+    , validation
     , vector
   default-language: Haskell2010
