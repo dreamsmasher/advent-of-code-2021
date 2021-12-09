@@ -7,7 +7,7 @@ import Data.Char
 import Prelude hiding (sum, product)
 import Text.Read (readMaybe)
 import Data.Either (isLeft, fromRight)
-import Data.Foldable (foldl', Foldable (toList))
+import Data.Foldable (foldl', Foldable (toList), for_)
 import Control.Arrow
 import Data.HashMap.Lazy qualified as HMLazy
 import Data.HashMap.Strict qualified as HMStrict
@@ -34,6 +34,7 @@ import Data.Hashable (Hashable)
 import qualified Data.IntMap as IntMap
 import Data.Set qualified as Set
 import Data.Monoid (Sum (..))
+import Control.Monad.Cont (ContT(runContT), MonadCont (callCC))
 
 parseLines :: (String -> a) -> String -> [a]
 parseLines f = map f . lines
@@ -112,6 +113,12 @@ instance Foldable f => Coalesce f where
 (~>) :: (Traversable t, Applicative f) => t a -> (a -> f b) -> f (t b)
 (~>) = for
 infixr 6 ~>
+
+(~>>) :: (Traversable t, Applicative f) => t a -> (a -> f b) -> f ()
+(~>>) = for_
+
+(>~>) :: (Traversable t, Monad m) => m (t a) -> (a -> m b) -> m (t b)
+mta >~> f = mta >>= traverse f
 
 dropR :: Int -> [a] -> [a]
 dropR n xs = take (length xs - n) xs
@@ -255,3 +262,7 @@ toMapSemi = toMapWith (<>)
 
 toMap :: (Foldable t, Ord k) => t k -> t v -> MLazy.Map k v
 toMap keys vals = MLazy.fromList $ zip (toList keys) (toList vals)
+
+assuming :: Applicative f => Bool -> f a -> f (Maybe a)
+assuming False = const $ pure Nothing
+assuming _ = fmap Just
